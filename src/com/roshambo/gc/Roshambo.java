@@ -3,9 +3,11 @@
 package com.roshambo.gc;
 
 public enum Roshambo {
-	ROCK, 
-	PAPER, 
+	ROCK,
+
+	PAPER,
+
 	SCISSORS;
-	
-	//toString() method 
+
+	//TODO: Create toString() method using switch (this), then cases for each value (rock, paper, scissors). 
 }

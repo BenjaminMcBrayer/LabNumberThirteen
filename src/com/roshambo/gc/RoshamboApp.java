@@ -9,17 +9,21 @@ public class RoshamboApp {
 	public static void main(String[] args) {
 		Scanner scnr = new Scanner(System.in);
 		Human user = new Human();
+		int userWins = 0;
+		int userLosses = 0;
+		int nemesisWins = 0;
+		int nemesisLosses = 0;
 		String userName;
 		String selectNemesis;
 		String userRoshamboVal;
 		String playAgain;
 		Player nemesis = null;
 		System.out.println("Welcome to Roshambo!");
-		
+
 		// Prompt user to enter name; greet user.
 		userName = Validator.getString(scnr, "Please enter your name: ");
 		user.setName(userName);
-	
+
 		do {
 			// Prompt user to select an opponent.
 			selectNemesis = Validator.getString(scnr, "Would you like to play against The Jets or The Sharks (J/S)? ");
@@ -69,12 +73,25 @@ public class RoshamboApp {
 			}
 			// Display the result of the match.
 			System.out.println(matchResult(user, nemesis));
-			
+
+			// Display total wins and losses for user and opponent.
+			if (matchResult(user, nemesis).contains(nemesis.getName())) {
+				++nemesisWins;
+				++userLosses;
+
+			} else if (matchResult(user, nemesis).contains(user.getName())) {
+				++userWins;
+				++userLosses;
+			}
+			System.out.printf("%1$-10s %2$-10s %3$-10s\n", "", user.getName(), nemesis.getName());
+			System.out.printf("%1$-10s %2$-10s %3$-10s\n", "Wins: ", userWins, nemesisWins);
+			System.out.printf("%1$-10s %2$-10s %3$-10s\n", "Losses: ", userLosses, nemesisLosses);
+
 			// Prompt user to continue.
 			playAgain = Validator.getString(scnr, "Play again? (y/n) ");
-			
+
 		} while (playAgain.equalsIgnoreCase("y"));
-		
+
 		System.out.println("Game Over. Thank you for playing.");
 
 		scnr.close();

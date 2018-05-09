@@ -3,7 +3,8 @@
 package com.roshambo.gc;
 
 public class Random extends Player {
-
+	
+	//TODO: Change generateRoshambo so that it returns a value (so that it is not void).
 	@Override
 	public void generateRoshambo() {
 		int random = (int) (Math.random() * 3 + 1);

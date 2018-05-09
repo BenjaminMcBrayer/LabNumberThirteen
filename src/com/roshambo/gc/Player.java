@@ -23,6 +23,7 @@ public abstract class Player {
 	}
 
 	public abstract void generateRoshambo();
+	//TODO: Change the above method to return a Roshambo value.
 
 	@Override
 	public String toString() {
