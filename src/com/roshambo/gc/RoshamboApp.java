@@ -1,3 +1,5 @@
+//Benjamin McBrayer, 5.8.2018
+
 package com.roshambo.gc;
 
 import java.util.Scanner;
