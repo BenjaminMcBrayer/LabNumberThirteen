@@ -1,91 +1,70 @@
-//Benjamin McBrayer, 5.8.2018
 
 package com.roshambo.gc;
 
 import java.util.Scanner;
 
+/**
+ * @author benjamin.mcbrayer
+ * @version 3.0
+ */
 public class RoshamboApp {
 
 	public static void main(String[] args) {
+		// Declare and initialize variables.
 		Scanner scnr = new Scanner(System.in);
-		Human user = new Human();
+		Player user = new Human();
 		int userWins = 0;
 		int userLosses = 0;
 		int nemesisWins = 0;
 		int nemesisLosses = 0;
+		Roshambo userValue;
 		String userName;
 		String selectNemesis;
-		String userRoshamboVal;
 		String playAgain;
+		String result;
 		Player nemesis = null;
+
+		// Introduce program.
 		System.out.println("Welcome to Roshambo!");
 
 		// Prompt user to enter name; greet user.
 		userName = Validator.getString(scnr, "Please enter your name: ");
 		user.setName(userName);
 
+		// Prompt user to select an opponent.
+		selectNemesis = Validator.getString(scnr, "Would you like to play against The Jets or The Sharks (J/S)? ");
+		if (selectNemesis.equalsIgnoreCase("J")) {
+			nemesis = playFalseNemesis();
+
+		} else if (selectNemesis.equalsIgnoreCase("S")) {
+			nemesis = playTrueNemesis();
+		}
+
 		do {
-			// Prompt user to select an opponent.
-			selectNemesis = Validator.getString(scnr, "Would you like to play against The Jets or The Sharks (J/S)? ");
-			if (selectNemesis.equalsIgnoreCase("J")) {
-				System.out.println("You have chosen to play against The Jets. Good luck!");
-				nemesis = new Rock();
-				nemesis.setName("The Jets");
+			// Prompt user to play.
+			userValue = user.generateRoshambo();
+			user.setValue(userValue);
 
-				// Display the user's roshamboVal.
-				userRoshamboVal = Validator.getString(scnr, "Rock, paper, or scissors? (R/P/S): ");
-				if (userRoshamboVal.equalsIgnoreCase("R")) {
-					user.setRoshamboValue(Roshambo.ROCK);
-					System.out.print(userName + ": " + Roshambo.ROCK + "\n");
-				} else if (userRoshamboVal.equalsIgnoreCase("P")) {
-					user.setRoshamboValue(Roshambo.PAPER);
-					System.out.print(userName + ": " + Roshambo.PAPER + "\n");
-				} else if (userRoshamboVal.equalsIgnoreCase("S")) {
-					user.setRoshamboValue(Roshambo.SCISSORS);
-					System.out.print(userName + ": " + Roshambo.SCISSORS + "\n");
-				}
+			// Display the opponent's roshamboVal.
+			System.out.println(nemesis.getName() + ": " + nemesis.getValue());
 
-				// Display the opponent's roshamboVal.
-				System.out.print(nemesis.getName() + ": ");
-				nemesis.generateRoshambo();
+			// Display the user's roshamboVal.
+			System.out.println(userName + ": " + user.getValue());
 
-			} else if (selectNemesis.equalsIgnoreCase("S")) {
-				System.out.println("You have chosen to play against The Sharks. Good luck!");
-				nemesis = new Random();
-				nemesis.setName("The Sharks");
-
-				// Display the user's roshamboVal.
-				userRoshamboVal = Validator.getString(scnr, "Rock, paper, or scissors? (R/P/S): ");
-				if (userRoshamboVal.equalsIgnoreCase("R")) {
-					user.setRoshamboValue(Roshambo.ROCK);
-					System.out.print(userName + ": " + Roshambo.ROCK + "\n");
-				} else if (userRoshamboVal.equalsIgnoreCase("P")) {
-					user.setRoshamboValue(Roshambo.PAPER);
-					System.out.print(userName + ": " + Roshambo.PAPER + "\n");
-				} else if (userRoshamboVal.equalsIgnoreCase("S")) {
-					user.setRoshamboValue(Roshambo.SCISSORS);
-					System.out.print(userName + ": " + Roshambo.SCISSORS + "\n");
-				}
-
-				// Display the opponent's roshamboVal.
-				System.out.print(nemesis.getName() + ": ");
-				nemesis.generateRoshambo();
-			}
 			// Display the result of the match.
-			System.out.println(matchResult(user, nemesis));
+			result = matchResult(user, nemesis);
+			System.out.println(result);
 
 			// Display total wins and losses for user and opponent.
-			if (matchResult(user, nemesis).contains(nemesis.getName())) {
+			if (result.contains(nemesis.getName())) {
 				++nemesisWins;
 				++userLosses;
 
-			} else if (matchResult(user, nemesis).contains(user.getName())) {
+			} else if (result.contains(user.getName())) {
 				++userWins;
-				++userLosses;
+				++nemesisLosses;
 			}
-			System.out.printf("%1$-10s %2$-10s %3$-10s\n", "", user.getName(), nemesis.getName());
-			System.out.printf("%1$-10s %2$-10s %3$-10s\n", "Wins: ", userWins, nemesisWins);
-			System.out.printf("%1$-10s %2$-10s %3$-10s\n", "Losses: ", userLosses, nemesisLosses);
+			displayWinsAndLosses(user, userWins, userLosses, nemesis, nemesisWins, nemesisLosses);
 
 			// Prompt user to continue.
 			playAgain = Validator.getString(scnr, "Play again? (y/n) ");
@@ -97,16 +76,61 @@ public class RoshamboApp {
 		scnr.close();
 	}
 
-	public static String matchResult(Human user, Player nemesis) {
-		if (user.getRoshamboValue() == nemesis.getRoshamboValue()) {
+	/**
+	 * @return
+	 */
+	public static Player playTrueNemesis() {
+		Player nemesis;
+		System.out.println("You have chosen to play against The Sharks. Good luck!");
+		nemesis = new TrueNemesis();
+		nemesis.setName("The Sharks");
+		Roshambo nemesisValue = nemesis.generateRoshambo();
+		nemesis.setValue(nemesisValue);
+		return nemesis;
+	}
+
+	/**
+	 * @return
+	 */
+	public static Player playFalseNemesis() {
+		Player nemesis;
+		System.out.println("You have chosen to play against The Jets. Good luck!");
+		nemesis = new FalseNemesis();
+		nemesis.setName("The Jets");
+		Roshambo nemesisValue = nemesis.generateRoshambo();
+		nemesis.setValue(nemesisValue);
+		return nemesis;
+	}
+
+	/**
+	 * @param user
+	 * @param nemesis
+	 * @return
+	 */
+	public static String matchResult(Player user, Player nemesis) {
+		if (user.getValue() == nemesis.getValue()) {
 			return "It's a draw!";
-		} else if ((user.getRoshamboValue() == Roshambo.ROCK && nemesis.getRoshamboValue() == Roshambo.PAPER)
-				|| (user.getRoshamboValue() == Roshambo.PAPER && nemesis.getRoshamboValue() == Roshambo.SCISSORS)
-				|| (user.getRoshamboValue() == Roshambo.SCISSORS && nemesis.getRoshamboValue() == Roshambo.ROCK)) {
+		} else if ((user.getValue() == Roshambo.ROCK && nemesis.getValue() == Roshambo.PAPER)
+				|| (user.getValue() == Roshambo.PAPER && nemesis.getValue() == Roshambo.SCISSORS)
+				|| (user.getValue() == Roshambo.SCISSORS && nemesis.getValue() == Roshambo.ROCK)) {
 			return nemesis.getName() + " wins!";
 		} else {
 			return user.getName() + " wins!";
 		}
 	}
 
+	/**
+	 * @param user
+	 * @param userWins
+	 * @param userLosses
+	 * @param nemesis
+	 * @param nemesisWins
+	 * @param nemesisLosses
+	 */
+	public static void displayWinsAndLosses(Player user, int userWins, int userLosses, Player nemesis, int nemesisWins,
+			int nemesisLosses) {
+		System.out.printf("%1$-10s %2$-10s %3$-10s\n", "", user.getName(), nemesis.getName());
+		System.out.printf("%1$-10s %2$-10s %3$-10s\n", "Wins: ", userWins, nemesisWins);
+		System.out.printf("%1$-10s %2$-10s %3$-10s\n", "Losses: ", userLosses, nemesisLosses);
+	}
 }

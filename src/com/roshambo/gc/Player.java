@@ -1,10 +1,22 @@
-//Benjamin McBrayer, 5.8.2018
-
 package com.roshambo.gc;
 
+/**
+ * @author benjamin.mcbrayer
+ *
+ */
 public abstract class Player {
 	private String name;
-	private Roshambo roshamboValue;
+	private Roshambo value;
+	
+	public abstract Roshambo generateRoshambo();
+
+	public Player() {
+	}
+
+	public Player(String name, Roshambo value) {
+		this.name = name;
+		this.value = value;
+	}
 
 	public String getName() {
 		return name;
@@ -14,19 +26,11 @@ public abstract class Player {
 		this.name = name;
 	}
 
-	public Roshambo getRoshamboValue() {
-		return roshamboValue;
+	public Roshambo getValue() {
+		return value;
 	}
 
-	public void setRoshamboValue(Roshambo roshamboValue) {
-		this.roshamboValue = roshamboValue;
-	}
-
-	public abstract void generateRoshambo();
-	//TODO: Change the above method to return a Roshambo value.
-
-	@Override
-	public String toString() {
-		return "Player [name=" + name + ", roshamboValue=" + roshamboValue + "]";
+	public void setValue(Roshambo value) {
+		this.value = value;
 	}
 }

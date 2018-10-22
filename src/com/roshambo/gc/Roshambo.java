@@ -1,7 +1,9 @@
-////Benjamin McBrayer, 5.8.2018
-
 package com.roshambo.gc;
 
+/**
+ * @author benjamin.mcbrayer
+ *
+ */
 public enum Roshambo {
 	ROCK,
 
@@ -9,5 +11,4 @@ public enum Roshambo {
 
 	SCISSORS;
 
-	//TODO: Create toString() method using switch (this), then cases for each value (rock, paper, scissors). 
 }

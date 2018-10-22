@@ -1,6 +1,5 @@
 package com.roshambo.gc;
 
-
 import java.util.Scanner;
 
 public class Validator {
@@ -42,21 +41,18 @@ public class Validator {
 		return i;
 	}
 
-	public static int getInt(Scanner sc, String prompt,
-    	    int min, int max, String errMsg)
-    	    {
-    	        int i = 0;
-    	        boolean isValid = false;
-    	        while (isValid == false)
-    	        {
-    	            i = getInt(sc, prompt);
-    	            if (i < min || i > max)
-    	                prompt = errMsg;
-    	            else
-    	                isValid = true;
-    	        }
-    	        return i;
-    	    }
+	public static int getInt(Scanner sc, String prompt, int min, int max, String errMsg) {
+		int i = 0;
+		boolean isValid = false;
+		while (isValid == false) {
+			i = getInt(sc, prompt);
+			if (i < min || i > max)
+				prompt = errMsg;
+			else
+				isValid = true;
+		}
+		return i;
+	}
 
 	public static double getDouble(Scanner sc, String prompt) {
 		double d = 0;
